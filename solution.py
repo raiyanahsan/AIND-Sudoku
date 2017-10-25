@@ -32,12 +32,21 @@ def naked_twins(values):
             if len(values[box]) == 2:
                 list.append(box)
     twins = []
-    for box1 in list:
-        for box2 in peers[box1]:
-            if values[box1] == values[box2]:
-                twins.append([[box1, box2]])
+    for fst in list:
+        for snd in peers[fst]:
+            if values[fst] == values[snd]:
+                twins.append([(fst, snd)])
 
     #  Eliminate the naked twins as possibilities for their peers
+    for (fst, snd) in twins:
+            pFst = peers[fst]
+            pSnd = peers[snd]
+            peers = [peer for peer in pSnd if peer in pFst]
+            value = values[snd]
+            for peers in value:
+                values[peers] = values[peers].replace(value, '')
+
+    return values
 
 def cross(A, B):
     "Cross product of elements in A and elements in B."
