@@ -26,6 +26,16 @@ def naked_twins(values):
         the values dictionary with the naked twins eliminated from peers.
     """
     # Find all instances of naked twins
+    list = []
+    for unit in units:
+        for box in unit:
+            if len(values[box]) == 2:
+                list.append(box)
+    twins = []
+    for box1 in list:
+        for box2 in peers[box1]:
+            if values[box1] == values[box2]:
+                twins.append([[box1, box2]])
 
     #  Eliminate the naked twins as possibilities for their peers
 
@@ -39,7 +49,7 @@ row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 diagonal_units = [[m + n for m, n in zip(rows, cols)]]
-otherDiagonal_units = [[m + n for m,n in zip(rows, reversed(cols))]]
+otherDiagonal_units = [[m + n for m, n in zip(rows, reversed(cols))]]
 unitlist = row_units + column_units + square_units+diagonal_units+ otherDiagonal_units
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
